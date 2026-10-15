@@ -1,0 +1,17 @@
+// miro/A17 bring-up: export the QTI dataipa uapi headers.
+//
+// The upstream file next to this one (Androidbp, without the dot) contains a
+// genrule-based qti_ipa_kernel_headers that is not parsed by Soong, so
+// hardware/qcom-caf/common defines a fallback qti_ipa_kernel_headers that only
+// exports the generic generated_kernel_headers. On a prebuilt-kernel tree those
+// do not contain msm_ipa.h, so libipanat/ipacm fail to compile.
+//
+// Export the source uapi dir from a module living in this directory (Soong does
+// not allow export_include_dirs to escape the module directory) and have the
+// common fallback re-export it.
+cc_library_headers {
+    name: "qti_ipa_kernel_headers_local",
+    export_include_dirs: ["include/uapi"],
+    vendor_available: true,
+    recovery_available: true,
+}
